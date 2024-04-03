@@ -27,8 +27,8 @@ services:
     networks:
       - jenkins_network
     volumes:
-      - $PWD/jenkins/jenkins-data:/var/jenkins_home
-      - $PWD/jenkins/jenkins-docker-certs:/certs/client:ro
+      - $PWD/jenkins-data:/var/jenkins_home
+      - $PWD/jenkins-docker-certs:/certs/client:ro
 
 networks:
   jenkins_network:
