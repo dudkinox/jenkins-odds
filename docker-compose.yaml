@@ -33,3 +33,7 @@ services:
 networks:
   jenkins_network:
     name: jenkins_network
+
+volumes:
+  jenkins-data:
+  jenkins-docker-certs:
