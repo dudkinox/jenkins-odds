@@ -1,15 +1,39 @@
-version: '3.8'
+version: '3.9'
 services:
-  jenkins:
-    image: jenkins/jenkins:lts
-    container_name: jenkins
-    ports:
-      - "8080:8080" 
-      - "50000:50000" 
+  docker:
+    container_name: docker
+    image: docker:dind
+    privileged: true
+    environment:
+      - DOCKER_TLS_CERTDIR=/certs
+    expose:
+      - 2376
+    networks:
+      - jenkins_network
     volumes:
-      - /home/odds/jenkins/jenkins_data:/var/jenkins_home 
-    restart: unless-stopped
+      - jenkins-data:/var/jenkins_home
+      - jenkins-docker-certs:/certs/client
+  jenkins_server:
+    build: .
+    container_name: jenkins_server
+    ports:
+      - 8080:8080
+      - 50000:50000
+    restart: on-failure
+    environment:
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_TLS_VERIFY=1
+      - DOCKER_CERT_PATH=/certs/client
+    networks:
+      - jenkins_network
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - jenkins-docker-certs:/certs/client:ro
+
+networks:
+  jenkins_network:
+    name: jenkins_network
 
 volumes:
-  jenkins_data:
-
+  jenkins-data:
+  jenkins-docker-certs:
