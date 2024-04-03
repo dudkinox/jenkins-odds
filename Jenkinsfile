@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                git branch: 'main', url: 'https://github.com/dudkinox/jenkins-odds'
+                git branch: 'main', url: 'https://github.com/dudkinox/stock-application'
             }
         }
         stage('Discord noti') {
